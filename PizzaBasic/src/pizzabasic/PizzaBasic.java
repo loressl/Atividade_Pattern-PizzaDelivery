@@ -1,7 +1,13 @@
 package pizzabasic;
+import interfaces.IPlugin;
 import interfaces.Pizza;
 
-public class PizzaBasic implements Pizza{
+public class PizzaBasic implements IPlugin,Pizza{
+	
+	@Override
+	public boolean initialize() {
+		return true;
+	}
 
 	@Override
 	public void mountPizza() {
@@ -12,4 +18,5 @@ public class PizzaBasic implements Pizza{
 	public String getDescription() {
 		return "Pizza Básica";
 	}
+
 }

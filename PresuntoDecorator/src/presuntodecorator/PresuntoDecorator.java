@@ -1,13 +1,19 @@
 package presuntodecorator;
+import interfaces.IPlugin;
 import interfaces.Pizza;
 import interfaces.PizzaDecorator;
 
-public class PresuntoDecorator extends PizzaDecorator{
+public class PresuntoDecorator extends PizzaDecorator implements IPlugin{
 
 	public PresuntoDecorator(Pizza pizzaDecorator) {
 		super(pizzaDecorator);
 	}
 
+	@Override
+	public boolean initialize() {
+		return true;
+	}
+	
 	@Override
 	public void mountPizza() {
 		super.mountPizza();
@@ -18,5 +24,6 @@ public class PresuntoDecorator extends PizzaDecorator{
 	public String getDescription() {
 		return "Presunto";
 	}
+
 
 }
