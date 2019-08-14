@@ -9,12 +9,13 @@ import javax.swing.JScrollPane;
 
 public class MainWindow extends javax.swing.JFrame{
 
-    public MainWindow() {
+	private static final long serialVersionUID = 1L;
+	public MainWindow() {
         initComponents();
     }
     
-    @SuppressWarnings("unchecked")                     
-    private void initComponents() {
+    @SuppressWarnings("rawtypes")
+	private void initComponents() {
 
         modelChoosen = new DefaultListModel();
         modelList = new DefaultListModel();
@@ -64,7 +65,7 @@ public class MainWindow extends javax.swing.JFrame{
         typePizza.setText("Tipos de Pizzas:");
 
         ingredientsAvailable.setFont(new java.awt.Font("Tahoma", 1, 14)); 
-        ingredientsAvailable.setText("Ingredientes DisponÃ­veis");
+        ingredientsAvailable.setText("Ingredientes Disponíveis");
 
         ingredientsChosen.setFont(new java.awt.Font("Tahoma", 1, 14));
         ingredientsChosen.setText("Ingredientes Escolhidos");
@@ -155,18 +156,22 @@ public class MainWindow extends javax.swing.JFrame{
     
     public JList<String> getDecoratorChosen() {return decoratorChosen;}
 
-    public DefaultListModel getModelChoosen() {return modelChoosen;}
+    @SuppressWarnings("rawtypes")
+	public DefaultListModel getModelChoosen() {return modelChoosen;}
 
-    public DefaultListModel getModelList() {return modelList;}
+    @SuppressWarnings("rawtypes")
+	public DefaultListModel getModelList() {return modelList;}
 
-    public void setModelChoosen(DefaultListModel modelChoosen) {this.modelChoosen = modelChoosen;}
+    public void setModelChoosen(@SuppressWarnings("rawtypes") DefaultListModel modelChoosen) {this.modelChoosen = modelChoosen;}
 
-    public void setModelList(DefaultListModel modelList) {this.modelList = modelList;}
+    public void setModelList(@SuppressWarnings("rawtypes") DefaultListModel modelList) {this.modelList = modelList;}
 
     public JComboBox<String> getComboBoxTypePizzas() {return comboBoxTypePizzas;}
     
-    private DefaultListModel modelChoosen;
-    private DefaultListModel modelList;
+    @SuppressWarnings("rawtypes")
+	private DefaultListModel modelChoosen;
+    @SuppressWarnings("rawtypes")
+	private DefaultListModel modelList;
     private JButton addIngredients;
     private JComboBox<String> comboBoxTypePizzas;
     private JList<String> decoratorChosen;
