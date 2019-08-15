@@ -19,8 +19,8 @@ public class UIController implements IUIController {
 	public boolean initialize() {
 		mainWindow = new MainWindow();
 		mainWindow.setVisible(true);
-		listItensDecorators = Core.getInstance().getPluginController().getPluginsDecorators();
-		plugins = Core.getInstance().getPluginController().getPlugins();
+		List<String> listItensDecorators = Core.getInstance().getPluginController().getPluginsDecorators();
+		String[] plugins = Core.getInstance().getPluginController().getPlugins();
 		URL[] jars = Core.getInstance().getPluginController().getJars();
 		URLClassLoader ulc = new URLClassLoader(jars);
 		loadItensComboBox(ulc);
@@ -34,10 +34,12 @@ public class UIController implements IUIController {
 			public void actionPerformed(ActionEvent e) {
 				itemSelectedCombox = (String) mainWindow.getComboBoxTypePizzas().getSelectedItem();
 				if (!itemSelectedCombox.equalsIgnoreCase("<Escolha o tipo de pizza>")) {
-					mainWindow.getDecoratorAvailable().setModel(mainWindow.getModelList());
-					for (String itemDecorator : listItensDecorators)
-						mainWindow.getModelList().addElement(itemDecorator);
-					activeButtons(true);
+					if(mainWindow.getModelList().size()==0) {
+						mainWindow.getDecoratorAvailable().setModel(mainWindow.getModelList());
+						for (String itemDecorator : listItensDecorators)
+							mainWindow.getModelList().addElement(itemDecorator);
+						activeButtons(true);						
+					}
 				} else {
 					activeButtons(false);
 					mainWindow.getModelList().removeAllElements();
@@ -45,31 +47,30 @@ public class UIController implements IUIController {
 				}
 			}
 		});
-
 		mainWindow.getUpIngredients().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String selectedItem = mainWindow.getDecoratorChosen().getSelectedValue();
 				int itemIndex = mainWindow.getDecoratorChosen().getSelectedIndex();
 				DefaultListModel model = (DefaultListModel) mainWindow.getDecoratorChosen().getModel();
-				if (itemIndex > 0) {
-					model.remove(itemIndex);
-					model.add(itemIndex - 1, selectedItem);
-					mainWindow.getDecoratorChosen().setSelectedIndex(itemIndex - 1);
-				}
+				if (itemIndex > 0)
+					upDownChangeComponents(itemIndex, selectedItem, itemIndex - 1, model);
+//					mainWindow.getDownIngredients().setEnabled(true);
+//				}else
+//					mainWindow.getUpIngredients().setEnabled(false);
 			}
 		});
 		mainWindow.getDownIngredients().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String selectedItem = mainWindow.getDecoratorChosen().getSelectedValue();
-				int itemIndex = mainWindow.getDecoratorChosen().getSelectedIndex();
+				String selectedDecorator = mainWindow.getDecoratorChosen().getSelectedValue();
+				int itemIndexDecorator = mainWindow.getDecoratorChosen().getSelectedIndex();
 				DefaultListModel model = (DefaultListModel) mainWindow.getDecoratorChosen().getModel();
-				if (itemIndex < model.getSize() - 1) {
-					model.remove(itemIndex);
-					model.add(itemIndex + 1, selectedItem);
-					mainWindow.getDecoratorChosen().setSelectedIndex(itemIndex + 1);
-				}
+				if (itemIndexDecorator < model.getSize() - 1)
+					upDownChangeComponents(itemIndexDecorator, selectedDecorator, itemIndexDecorator + 1, model);
+//					mainWindow.getUpIngredients().setEnabled(true);
+//				}else
+//					mainWindow.getDownIngredients().setEnabled(false);
 			}
 		});
 		mainWindow.getAddIngredients().addActionListener(new ActionListener() {
@@ -79,7 +80,7 @@ public class UIController implements IUIController {
 				if (itemIndex != -1) {
 					mainWindow.setModelChoosen((DefaultListModel) mainWindow.getDecoratorChosen().getModel());
 					mainWindow.getModelChoosen().remove(itemIndex);
-				}
+				}	
 			}
 		});
 		mainWindow.getRemoveIngredients().addActionListener(new ActionListener() {
@@ -94,7 +95,7 @@ public class UIController implements IUIController {
 			public void actionPerformed(ActionEvent e) {
 				int ingredientsChoosen = mainWindow.getModelChoosen().getSize();
 				List<String> newInstances = new ArrayList<>();
-				for (int i = 0; i < ingredientsChoosen; i++) 
+				for (int i = 0; i < ingredientsChoosen; i++)
 					for (int j = 0; j < plugins.length; j++) {
 						String pluginName = plugins[j].split("\\.")[0];
 						if (mainWindow.getModelChoosen().getElementAt(i).equals(plugins[j].split("D")[0])) {
@@ -102,7 +103,7 @@ public class UIController implements IUIController {
 							break;
 						}
 					}
-				Pizza pizza = preparePizza(ulc,newInstances);
+				Pizza pizza = preparePizza(ulc, newInstances);
 				pizza.mountPizza();
 				JOptionPane.showMessageDialog(mainWindow, "Pizza preparada com sucesso!! ");
 				mainWindow.getModelChoosen().removeAllElements();
@@ -157,10 +158,14 @@ public class UIController implements IUIController {
 		return null;
 	}
 
+	private void upDownChangeComponents(int itemIndexDecorator, String selectedDecorator, int controlIndexDecorator, DefaultListModel model) {
+		model.remove(itemIndexDecorator);
+		model.add(controlIndexDecorator, selectedDecorator);
+		mainWindow.getDecoratorChosen().setSelectedIndex(controlIndexDecorator);
+	}
+
 	private MainWindow mainWindow;
 	private List<String> comboItens = new ArrayList<>();
 	private List<Pizza> listPizzas = new ArrayList<>();
-	private List<String> listItensDecorators = new ArrayList<>();
 	private String itemSelectedCombox = null;
-	private String[] plugins;
 }
