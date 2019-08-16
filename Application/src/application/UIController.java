@@ -55,9 +55,6 @@ public class UIController implements IUIController {
 				DefaultListModel model = (DefaultListModel) mainWindow.getDecoratorChosen().getModel();
 				if (itemIndex > 0)
 					upDownChangeComponents(itemIndex, selectedItem, itemIndex - 1, model);
-//					mainWindow.getDownIngredients().setEnabled(true);
-//				}else
-//					mainWindow.getUpIngredients().setEnabled(false);
 			}
 		});
 		mainWindow.getDownIngredients().addActionListener(new ActionListener() {
@@ -68,9 +65,6 @@ public class UIController implements IUIController {
 				DefaultListModel model = (DefaultListModel) mainWindow.getDecoratorChosen().getModel();
 				if (itemIndexDecorator < model.getSize() - 1)
 					upDownChangeComponents(itemIndexDecorator, selectedDecorator, itemIndexDecorator + 1, model);
-//					mainWindow.getUpIngredients().setEnabled(true);
-//				}else
-//					mainWindow.getDownIngredients().setEnabled(false);
 			}
 		});
 		mainWindow.getAddIngredients().addActionListener(new ActionListener() {
